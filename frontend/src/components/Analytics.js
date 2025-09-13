@@ -40,9 +40,9 @@ const Analytics = () => {
       ]);
 
       setAnalytics(overviewRes.data);
-      setTrends(trendsRes.data);
-      setTopTweets(topTweetsRes.data);
-      setScheduleData(scheduleRes.data);
+      setTrends(trendsRes.data || []);
+      setTopTweets(topTweetsRes.data || []);
+      setScheduleData(scheduleRes.data || []);
     } catch (error) {
       console.error('Error fetching analytics data:', error);
     } finally {
@@ -53,7 +53,6 @@ const Analytics = () => {
   useEffect(() => {
     fetchAnalyticsData();
   }, [fetchAnalyticsData]);
-
 
   if (loading) {
     return (
@@ -103,7 +102,7 @@ const Analytics = () => {
                         Total Likes
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
-                        {analytics.engagement.totalLikes}
+                        {analytics?.engagement?.totalLikes || 0}
                       </dd>
                     </dl>
                   </div>
@@ -125,7 +124,7 @@ const Analytics = () => {
                         Total Retweets
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
-                        {analytics.engagement.totalRetweets}
+                        {analytics?.engagement?.totalRetweets || 0}
                       </dd>
                     </dl>
                   </div>
@@ -147,7 +146,7 @@ const Analytics = () => {
                         Total Replies
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
-                        {analytics.engagement.totalReplies}
+                        {analytics?.engagement?.totalReplies || 0}
                       </dd>
                     </dl>
                   </div>
@@ -169,7 +168,7 @@ const Analytics = () => {
                         Total Impressions
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
-                        {analytics.engagement.totalImpressions}
+                        {analytics?.engagement?.totalImpressions || 0}
                       </dd>
                     </dl>
                   </div>
@@ -181,42 +180,46 @@ const Analytics = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           {/* Engagement Trends */}
-          <div className="bg-white shadow rounded-lg p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Engagement Trends</h2>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={trends}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="_id.day" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="likes" stroke="#1DA1F2" strokeWidth={2} />
-                <Line type="monotone" dataKey="retweets" stroke="#17a2b8" strokeWidth={2} />
-                <Line type="monotone" dataKey="replies" stroke="#28a745" strokeWidth={2} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+          {trends?.length > 0 && (
+            <div className="bg-white shadow rounded-lg p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Engagement Trends</h2>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={trends}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="_id.day" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="likes" stroke="#1DA1F2" strokeWidth={2} />
+                  <Line type="monotone" dataKey="retweets" stroke="#17a2b8" strokeWidth={2} />
+                  <Line type="monotone" dataKey="replies" stroke="#28a745" strokeWidth={2} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          )}
 
           {/* Best Posting Times */}
-          <div className="bg-white shadow rounded-lg p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Best Posting Times</h2>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={scheduleData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="_id" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="count" fill="#1DA1F2" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          {scheduleData?.length > 0 && (
+            <div className="bg-white shadow rounded-lg p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Best Posting Times</h2>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={scheduleData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="_id" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="count" fill="#1DA1F2" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          )}
         </div>
 
         {/* Top Performing Tweets */}
         <div className="bg-white shadow rounded-lg p-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Top Performing Tweets</h2>
           
-          {topTweets.length === 0 ? (
+          {topTweets?.length === 0 ? (
             <p className="text-gray-500 text-center py-8">No posted tweets yet.</p>
           ) : (
             <div className="space-y-4">
@@ -226,10 +229,10 @@ const Analytics = () => {
                     <div className="flex-1">
                       <p className="text-sm text-gray-900 mb-2">{tweet.content}</p>
                       <div className="flex items-center space-x-4 text-xs text-gray-500">
-                        <span>❤️ {tweet.analytics.likes}</span>
-                        <span>🔄 {tweet.analytics.retweets}</span>
-                        <span>💬 {tweet.analytics.replies}</span>
-                        <span>👁️ {tweet.analytics.impressions}</span>
+                        <span>❤️ {tweet?.analytics?.likes || 0}</span>
+                        <span>🔄 {tweet?.analytics?.retweets || 0}</span>
+                        <span>💬 {tweet?.analytics?.replies || 0}</span>
+                        <span>👁️ {tweet?.analytics?.impressions || 0}</span>
                       </div>
                     </div>
                     <div className="ml-4">
