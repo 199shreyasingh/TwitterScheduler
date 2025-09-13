@@ -66,7 +66,7 @@ const Dashboard = () => {
                         Total Tweets
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
-                        {analytics.totalTweets}
+                        {analytics?.totalTweets}
                       </dd>
                     </dl>
                   </div>
@@ -88,7 +88,7 @@ const Dashboard = () => {
                         Scheduled
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
-                        {analytics.scheduledTweets}
+                        {analytics?.scheduledTweets}
                       </dd>
                     </dl>
                   </div>
@@ -110,7 +110,7 @@ const Dashboard = () => {
                         Posted
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
-                        {analytics.postedTweets}
+                        {analytics?.postedTweets}
                       </dd>
                     </dl>
                   </div>
@@ -132,7 +132,7 @@ const Dashboard = () => {
                         Total Engagement
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
-                        {analytics.engagement.totalLikes + analytics.engagement.totalRetweets + analytics.engagement.totalReplies}
+                        {analytics?.engagement?.totalLikes + analytics?.engagement?.totalRetweets + analytics?.engagement?.totalReplies}
                       </dd>
                     </dl>
                   </div>
