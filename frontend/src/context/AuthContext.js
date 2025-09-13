@@ -2,6 +2,7 @@ import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext();
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -43,7 +44,7 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     if (token) {
       // Verify token and get user data
-      axios.get('/api/auth/me', {
+      axios.get(`${API_BASE_URL}/api/auth/me`, {
         headers: { 'x-auth-token': token }
       })
       .then(res => {
@@ -65,7 +66,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post('/api/auth/login', { email, password });
+      const res = await axios.post(`${API_BASE_URL}/api/auth/login`, { email, password });
       console.log(res);
       dispatch({
         type: 'LOGIN_SUCCESS',
@@ -82,7 +83,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const res = await axios.post('/api/auth/register', userData);
+      const res = await axios.post(`${API_BASE_URL}/api/auth/register`, userData);
       dispatch({
         type: 'LOGIN_SUCCESS',
         payload: res.data
