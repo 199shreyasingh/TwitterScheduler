@@ -58,6 +58,11 @@ app.use(express.json());
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/tweets", require("./routes/tweets"));
 app.use("/api/analytics", require("./routes/analytics"));
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+  next();
+});
+
 
 // Health check route
 app.get("/health", (req, res) => {
