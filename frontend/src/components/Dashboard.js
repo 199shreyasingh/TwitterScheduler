@@ -24,8 +24,8 @@ const Dashboard = () => {
         })
       ]);
 
-      setTweets(tweetsRes.data.tweets);
-      setAnalytics(analyticsRes.data);
+      setTweets(tweetsRes.data.tweets || []);
+      setAnalytics(analyticsRes.data || {});
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
     } finally {
@@ -172,8 +172,8 @@ const Dashboard = () => {
               View all →
             </Link>
           </div>
-          
-          {tweets.length === 0 ? (
+
+          {(tweets || []).length === 0 ? (
             <div className="bg-white shadow rounded-lg p-6 text-center">
               <p className="text-gray-500">No tweets scheduled yet.</p>
               <Link
@@ -186,7 +186,7 @@ const Dashboard = () => {
           ) : (
             <div className="bg-white shadow overflow-hidden sm:rounded-md">
               <ul className="divide-y divide-gray-200">
-                {tweets.map((tweet) => (
+                {(tweets || []).map((tweet) => (
                   <li key={tweet._id}>
                     <div className="px-4 py-4 sm:px-6">
                       <div className="flex items-center justify-between">
@@ -198,13 +198,12 @@ const Dashboard = () => {
                             <span className="mr-4">
                               Scheduled: {format(new Date(tweet.scheduledTime), 'MMM dd, yyyy HH:mm')}
                             </span>
-                            <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                              tweet.status === 'scheduled' 
+                            <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${tweet.status === 'scheduled'
                                 ? 'bg-yellow-100 text-yellow-800'
                                 : tweet.status === 'posted'
-                                ? 'bg-green-100 text-green-800'
-                                : 'bg-gray-100 text-gray-800'
-                            }`}>
+                                  ? 'bg-green-100 text-green-800'
+                                  : 'bg-gray-100 text-gray-800'
+                              }`}>
                               {tweet.status}
                             </span>
                           </div>
@@ -216,6 +215,7 @@ const Dashboard = () => {
               </ul>
             </div>
           )}
+
         </div>
       </div>
     </div>
